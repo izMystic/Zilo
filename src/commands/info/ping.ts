@@ -1,17 +1,29 @@
-import type { CommandData, SlashCommandProps, CommandOptions } from "commandkit";
+import type {
+  CommandData,
+  SlashCommandProps,
+  CommandOptions,
+} from "commandkit";
+import { EmbedBuilder } from "discord.js";
 
 export const data: CommandData = {
   name: "ping",
-  description: "Pong!",
+  description: "Returns the bot's ping.",
 };
 
 export const options: CommandOptions = {
   devOnly: true,
-  userPermissions: ["Administrator", "AddReactions"],
-  botPermissions: ["Administrator", "AddReactions"],
   deleted: false,
 };
 
-export function run({ interaction, client, handler }: SlashCommandProps) {
-  interaction.reply({ content: `:ping_pong: Pong! ${interaction.client.ws.ping}ms` });
+export async function run({ interaction }: SlashCommandProps) {
+  const ping = interaction.client.ws.ping; // Get the bot's ping
+
+  const embed = new EmbedBuilder()
+    .setTitle("Bot Ping")
+    .setDescription(`🏓 Pong! The bot's ping is **${ping}ms**.`)
+    .setColor("Blue");
+
+  await interaction.reply({
+    embeds: [embed],
+  });
 }
