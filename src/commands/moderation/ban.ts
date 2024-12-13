@@ -58,7 +58,6 @@ export async function run({ interaction }: SlashCommandProps) {
       .setColor("Green");
     interaction.reply({ embeds: [successEmbed] });
   } catch (error) {
-    console.error(error);
     const failureEmbed = new EmbedBuilder()
       .setTitle("Error")
       .setDescription("Failed to ban the user. Please check my permissions.")
