@@ -1,3 +1,34 @@
-node_modules
+# Node.js and Bun build artifacts
+node_modules/
+bun.lockb
+.pnpm-debug.log
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Bun specific build files
+.bun/
+
+# Environment variables
+.env
 .env.local
-dist
+.env.production
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# TypeScript files
+dist/
+build/
+
+# IDEs
+.vscode/
+.idea/
+
+# Miscellaneous
+coverage/
