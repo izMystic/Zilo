@@ -1,7 +1,6 @@
 import { Client, GatewayIntentBits } from "discord.js";
 import { CommandKit } from "commandkit";
 import { initializeMongoose } from "./database/mongo";
-import logger from "./utils/logger";
 import path from "node:path";
 import "./config";
 

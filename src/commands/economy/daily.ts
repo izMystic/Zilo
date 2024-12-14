@@ -4,7 +4,8 @@ import type {
   CommandOptions,
 } from "commandkit";
 import { EmbedBuilder } from "discord.js";
-import User from "../../database/schemas/UserSchema";
+import User from "@src/database/schemas/UserSchema";
+import logger from "@src/utils/logger";
 
 const DAILY_REWARD = 500;
 const COOLDOWN = 24 * 60 * 60 * 1000;
@@ -77,6 +78,7 @@ export async function run({ interaction }: SlashCommandProps) {
 
     interaction.reply({ embeds: [successEmbed] });
   } catch (error) {
+    logger.error(error);
     interaction.reply({
       content:
         "There was an error processing your daily reward. Please try again later.",

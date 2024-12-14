@@ -16,7 +16,7 @@ export const options: CommandOptions = {
 };
 
 export async function run({ interaction }: SlashCommandProps) {
-  const ping = interaction.client.ws.ping; // Get the bot's ping
+  const ping = interaction.client.ws.ping;
 
   const embed = new EmbedBuilder()
     .setTitle("Bot Ping")

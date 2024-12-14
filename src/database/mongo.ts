@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import logger from "../utils/logger";
+import logger from "@src/utils/logger";
 
 mongoose.set("strictQuery", true);
 

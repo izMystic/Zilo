@@ -4,6 +4,7 @@ import type {
   CommandOptions,
 } from "commandkit";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
+import logger from "@src/utils/logger";
 
 export const data: CommandData = {
   name: "unban",
@@ -38,11 +39,10 @@ export async function run({ interaction }: SlashCommandProps) {
   const reason = `${initialReason} (Actioned by: ${interaction.user.tag})`;
 
   if (!userId) {
-    const errorEmbed = new EmbedBuilder()
-      .setTitle("Error")
-      .setDescription("You must provide a valid user ID.")
-      .setColor("Red");
-    return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+    return interaction.reply({
+      content: "You must provide a valid user ID.",
+      ephemeral: true,
+    });
   }
 
   try {
@@ -63,13 +63,11 @@ export async function run({ interaction }: SlashCommandProps) {
       .setColor("Green");
     interaction.reply({ embeds: [successEmbed] });
   } catch (error) {
-    console.error(error);
-    const failureEmbed = new EmbedBuilder()
-      .setTitle("Error")
-      .setDescription(
+    logger.error(error);
+    interaction.reply({
+      content:
         "Failed to unban the user. Please check the user ID and my permissions.",
-      )
-      .setColor("Red");
-    interaction.reply({ embeds: [failureEmbed], ephemeral: true });
+      ephemeral: true,
+    });
   }
 }

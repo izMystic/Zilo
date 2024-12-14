@@ -4,7 +4,8 @@ import type {
   CommandOptions,
 } from "commandkit";
 import { Embed, EmbedBuilder } from "discord.js";
-import User from "../../database/schemas/UserSchema";
+import User from "@src/database/schemas/UserSchema";
+import logger from "@src/utils/logger";
 
 export const data: CommandData = {
   name: "balance",
@@ -41,6 +42,7 @@ export async function run({ interaction }: SlashCommandProps) {
 
     interaction.reply({ embeds: [balanceEmbed] });
   } catch (error) {
+    logger.error(error);
     interaction.reply({
       content:
         "There was an error fetching your balance. Please try again later.",

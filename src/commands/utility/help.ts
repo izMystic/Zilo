@@ -10,7 +10,7 @@ import {
   ButtonStyle,
   ComponentType,
 } from "discord.js";
-import logger from "../../utils/logger";
+import logger from "@src/utils/logger";
 
 export const data: CommandData = {
   name: "help",
@@ -54,7 +54,9 @@ export async function run({ interaction, client, handler }: SlashCommandProps) {
   const generateEmbed = (page: number) => {
     const category = categories[page];
     const embed = new EmbedBuilder()
-      .setTitle(`Help - ${category}`)
+      .setTitle(
+        `Help - ${category.trim()[0].toUpperCase() + category.trim().substring(1)}`,
+      )
       .setDescription(`List of commands in the ${category} category.`)
       .setColor("Blue");
 

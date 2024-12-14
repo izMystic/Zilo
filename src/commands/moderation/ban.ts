@@ -8,6 +8,7 @@ import {
   ApplicationCommandOptionType,
   EmbedBuilder,
 } from "discord.js";
+import logger from "@src/utils/logger";
 
 export const data: CommandData = {
   name: "ban",
@@ -42,11 +43,10 @@ export async function run({ interaction }: SlashCommandProps) {
   const reason = `${initialReason} (Actioned by: ${interaction.user.tag})`;
 
   if (!user) {
-    const errorEmbed = new EmbedBuilder()
-      .setTitle("Error")
-      .setDescription("The specified user was not found.")
-      .setColor("Red");
-    return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+    return interaction.reply({
+      content: "The specified user was not found.",
+      ephemeral: true,
+    });
   }
 
   try {
@@ -58,10 +58,10 @@ export async function run({ interaction }: SlashCommandProps) {
       .setColor("Green");
     interaction.reply({ embeds: [successEmbed] });
   } catch (error) {
-    const failureEmbed = new EmbedBuilder()
-      .setTitle("Error")
-      .setDescription("Failed to ban the user. Please check my permissions.")
-      .setColor("Red");
-    interaction.reply({ embeds: [failureEmbed], ephemeral: true });
+    logger.error(error);
+    interaction.reply({
+      content: "Failed to ban the user. Please check my permissions",
+      ephemeral: true,
+    });
   }
 }
