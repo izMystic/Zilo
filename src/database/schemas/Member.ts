@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
 
 const MemberSchema = new Schema({
-  userId: { type: String, required: true, unique: true },
-  guildId: { type: String, required: true, unique: true },
+  userId: { type: String, required: true },
+  guildId: { type: String, required: true },
   warnings: [
     {
       reason: { type: String, required: true },
@@ -11,5 +11,7 @@ const MemberSchema = new Schema({
     },
   ],
 });
+
+MemberSchema.index({ userId: 1, guildId: 1 }, { unique: true });
 
 export default model("Member", MemberSchema);
