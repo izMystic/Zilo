@@ -4,11 +4,17 @@ import type {
   CommandOptions,
 } from "commandkit";
 import {
-  GuildMember,
   ApplicationCommandOptionType,
+  GuildMember,
   EmbedBuilder,
 } from "discord.js";
 import logger from "@src/utils/logger";
+
+export const options: CommandOptions = {
+  devOnly: true,
+  userPermissions: ["ModerateMembers"],
+  botPermissions: ["ModerateMembers"],
+};
 
 export const data: CommandData = {
   name: "untimeout",
@@ -24,30 +30,15 @@ export const data: CommandData = {
       name: "reason",
       description: "The reason for removing the timeout.",
       type: ApplicationCommandOptionType.String,
-      required: false,
+      required: true,
     },
   ],
 };
 
-export const options: CommandOptions = {
-  devOnly: true,
-  userPermissions: ["ModerateMembers"],
-  botPermissions: ["ModerateMembers"],
-  deleted: false,
-};
-
 export async function run({ interaction }: SlashCommandProps) {
-  const user = interaction.options.getMember("user") as GuildMember | null;
-  const initialReason =
-    interaction.options.getString("reason") || "No reason provided.";
+  const user = interaction.options.getMember("user") as GuildMember;
+  const initialReason = interaction.options.getString("reason");
   const reason = `${initialReason} (Actioned by: ${interaction.user.tag})`;
-
-  if (!user) {
-    return interaction.reply({
-      content: "The specified user was not found.",
-      ephemeral: true,
-    });
-  }
 
   if (!user.isCommunicationDisabled()) {
     const errorEmbed = new EmbedBuilder()
@@ -62,7 +53,7 @@ export async function run({ interaction }: SlashCommandProps) {
     const successEmbed = new EmbedBuilder()
       .setTitle("Removed Timeout")
       .setDescription(`${user.user.tag} has been untimed out.`)
-      .addFields({ name: "Reason", value: initialReason })
+      .addFields({ name: "Reason", value: reason })
       .setColor("Green");
     interaction.reply({ embeds: [successEmbed] });
   } catch (error) {

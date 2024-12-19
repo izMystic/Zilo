@@ -10,6 +10,12 @@ import {
 } from "discord.js";
 import logger from "@src/utils/logger";
 
+export const options: CommandOptions = {
+  devOnly: true,
+  userPermissions: ["ModerateMembers"],
+  botPermissions: ["ModerateMembers"],
+};
+
 export const data: CommandData = {
   name: "timeout",
   description: "Timeout a user.",
@@ -31,38 +37,23 @@ export const data: CommandData = {
       name: "reason",
       description: "The reason for the timeout.",
       type: ApplicationCommandOptionType.String,
-      required: false,
+      required: true,
     },
   ],
 };
 
-export const options: CommandOptions = {
-  devOnly: true,
-  userPermissions: ["ModerateMembers"],
-  botPermissions: ["ModerateMembers"],
-  deleted: false,
-};
-
 export async function run({ interaction }: SlashCommandProps) {
-  const user = interaction.options.getMember("user") as GuildMember | null;
+  const user = interaction.options.getMember("user") as GuildMember;
   const duration = interaction.options.getInteger("duration", true);
-  const initialReason =
-    interaction.options.getString("reason") || "No reason provided.";
+  const initialReason = interaction.options.getString("reason");
   const reason = `${initialReason} (Actioned by: ${interaction.user.tag})`;
-
-  if (!user) {
-    return interaction.reply({
-      content: "The specified user was not found.",
-      ephemeral: true,
-    });
-  }
 
   if (duration > 2419200) {
     const errorEmbed = new EmbedBuilder()
       .setColor("Red")
       .setTitle("Error")
       .setDescription(
-        "Timeout duration cannot exceed 28 days (2419200 seconds).",
+        "Timeout duration cannot exceed 28 days (2419200 seconds)."
       );
     return interaction.reply({
       embeds: [errorEmbed],
@@ -75,9 +66,9 @@ export async function run({ interaction }: SlashCommandProps) {
     const successEmbed = new EmbedBuilder()
       .setTitle("Timeout Successful")
       .setDescription(
-        `${user.user.tag} has been timed out for ${duration} seconds.`,
+        `${user.user.tag} has been timed out for ${duration} seconds.`
       )
-      .addFields({ name: "Reason", value: initialReason })
+      .addFields({ name: "Reason", value: reason })
       .setColor("Green");
     interaction.reply({ embeds: [successEmbed] });
   } catch (error) {

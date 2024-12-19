@@ -5,14 +5,14 @@ import type {
 } from "commandkit";
 import { EmbedBuilder } from "discord.js";
 
-export const data: CommandData = {
-  name: "ping",
-  description: "Returns the bot's ping.",
-};
-
 export const options: CommandOptions = {
   devOnly: true,
   deleted: false,
+};
+
+export const data: CommandData = {
+  name: "ping",
+  description: "Returns the bot's ping.",
 };
 
 export async function run({ interaction }: SlashCommandProps) {

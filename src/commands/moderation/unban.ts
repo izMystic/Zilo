@@ -6,6 +6,12 @@ import type {
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import logger from "@src/utils/logger";
 
+export const options: CommandOptions = {
+  devOnly: true,
+  userPermissions: ["BanMembers"],
+  botPermissions: ["BanMembers"],
+};
+
 export const data: CommandData = {
   name: "unban",
   description: "Unban a user from the server.",
@@ -20,30 +26,15 @@ export const data: CommandData = {
       name: "reason",
       description: "Reason for unbanning the user.",
       type: ApplicationCommandOptionType.String,
-      required: false,
+      required: true,
     },
   ],
 };
 
-export const options: CommandOptions = {
-  devOnly: true,
-  userPermissions: ["BanMembers"],
-  botPermissions: ["BanMembers"],
-  deleted: false,
-};
-
 export async function run({ interaction }: SlashCommandProps) {
-  const userId = interaction.options.getString("user_id");
-  const initialReason =
-    interaction.options.getString("reason") || "No reason provided.";
+  const userId = interaction.options.getString("user_id", true);
+  const initialReason = interaction.options.getString("reason");
   const reason = `${initialReason} (Actioned by: ${interaction.user.tag})`;
-
-  if (!userId) {
-    return interaction.reply({
-      content: "You must provide a valid user ID.",
-      ephemeral: true,
-    });
-  }
 
   try {
     const banList = await interaction.guild?.bans.fetch();
