@@ -56,8 +56,8 @@ export async function run({ interaction, handler }: SlashCommandProps) {
   let currentCategory: string | null = null;
   let currentPage = 0;
 
-  const generateGeneralInfoEmbed = () => {
-    return new EmbedBuilder()
+  const generateGeneralInfoEmbed = () =>
+    new EmbedBuilder()
       .setTitle("Help - General Information")
       .addFields(
         {
@@ -80,7 +80,6 @@ export async function run({ interaction, handler }: SlashCommandProps) {
       .setFooter({
         text: `Total Categories: ${categories.length}`,
       });
-  };
 
   const generateCategoryEmbed = (category: string, page: number) => {
     const embed = new EmbedBuilder()
