@@ -16,14 +16,22 @@ export const data: CommandData = {
 };
 
 export async function run({ interaction }: SlashCommandProps) {
-  const ping = interaction.client.ws.ping;
+  try {
+    const ping = interaction.client.ws.ping;
 
-  const embed = new EmbedBuilder()
-    .setTitle("Bot Ping")
-    .setDescription(`🏓 Pong! The bot's ping is **${ping}ms**.`)
-    .setColor("Blue");
+    const embed = new EmbedBuilder()
+      .setTitle("Bot Ping")
+      .setDescription(`🏓 Pong! The bot's ping is **${ping}ms**.`)
+      .setColor("Blue");
 
-  await interaction.reply({
-    embeds: [embed],
-  });
+    await interaction.reply({
+      embeds: [embed],
+    });
+  } catch (error) {
+    console.error("Error responding to ping command:", error);
+    await interaction.reply({
+      content: "There was an error trying to execute that command.",
+      ephemeral: true,
+    });
+  }
 }
