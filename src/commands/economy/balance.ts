@@ -3,18 +3,17 @@ import type {
   SlashCommandProps,
   CommandOptions,
 } from "commandkit";
-import { Embed, EmbedBuilder } from "discord.js";
-import User from "@src/database/schemas/UserSchema";
+import { EmbedBuilder } from "discord.js";
+import User from "@src/database/schemas/User";
 import logger from "@src/utils/logger";
+
+export const options: CommandOptions = {
+  devOnly: true,
+};
 
 export const data: CommandData = {
   name: "balance",
   description: "Check your balance.",
-};
-
-export const options: CommandOptions = {
-  devOnly: true,
-  deleted: false,
 };
 
 export async function run({ interaction }: SlashCommandProps) {
@@ -35,7 +34,7 @@ export async function run({ interaction }: SlashCommandProps) {
       .setTitle(`${username}'s Balance`)
       .addFields(
         { name: "Wallet", value: `${user.coins} coins`, inline: true },
-        { name: "Bank", value: `${user.bank} coins`, inline: true },
+        { name: "Bank", value: `${user.bank} coins`, inline: true }
       )
       .setColor("Blue")
       .setTimestamp();

@@ -4,20 +4,19 @@ import type {
   CommandOptions,
 } from "commandkit";
 import { EmbedBuilder } from "discord.js";
-import User from "@src/database/schemas/UserSchema";
+import User from "@src/database/schemas/User";
 import logger from "@src/utils/logger";
 
 const DAILY_REWARD = 500;
 const COOLDOWN = 24 * 60 * 60 * 1000;
 
+export const options: CommandOptions = {
+  devOnly: true,
+};
+
 export const data: CommandData = {
   name: "daily",
   description: "Claim your daily reward.",
-};
-
-export const options: CommandOptions = {
-  devOnly: true,
-  deleted: false,
 };
 
 export async function run({ interaction }: SlashCommandProps) {
@@ -33,7 +32,7 @@ export async function run({ interaction }: SlashCommandProps) {
       const firstTimeEmbed = new EmbedBuilder()
         .setTitle("Daily Reward Claimed!")
         .setDescription(
-          `Welcome to the economy system! You've recieved your first daily reward of **${DAILY_REWARD} coins**!`,
+          `Welcome to the economy system! You've recieved your first daily reward of **${DAILY_REWARD} coins**!`
         )
         .setColor("Green")
         .setTimestamp();
@@ -52,7 +51,7 @@ export async function run({ interaction }: SlashCommandProps) {
       const cooldownEmbed = new EmbedBuilder()
         .setTitle("Daily Reward Cooldown")
         .setDescription(
-          `You've already claimed your daily reward! Come back in **${hours} hours and ${minutes} minutes**.`,
+          `You've already claimed your daily reward! Come back in **${hours} hours and ${minutes} minutes**.`
         )
         .setColor("Red")
         .setTimestamp();
@@ -67,7 +66,7 @@ export async function run({ interaction }: SlashCommandProps) {
     const successEmbed = new EmbedBuilder()
       .setTitle("Daily Reward Claimed!")
       .setDescription(
-        `You've recieved your daily reward of **${DAILY_REWARD} coins**!`,
+        `You've recieved your daily reward of **${DAILY_REWARD} coins**!`
       )
       .addFields({
         name: "Total Wallet Balance",
